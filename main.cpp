@@ -6,15 +6,27 @@
 using namespace luisa;
 using namespace luisa::compute;
 
+Float4 extCallable()
+{
+    return make_float4(0.0f, 0.0f, 1.0f, 1.0f);
+}
+
 int main(int, char** argv){
     Context context{argv[0]};
     Device device = context.create_device("cuda");
     Stream stream = device.create_stream();
 
     Image<float> device_image = device.create_image<float>(PixelStorage::BYTE4, make_uint2(1024u, 1024u), 0u);
-    Kernel2D kernel = [](Var<Image<float>> image) noexcept {
+
+    Callable lambda_callable = []() noexcept -> Float4 {
+        // return make_float4(0.0f, 1.0f, 0.0f, 1.0f);
+        return extCallable();
+    };
+
+    Kernel2D kernel = [&](Var<Image<float>> image) noexcept {
         Var coord = dispatch_id().xy();
-        image->write(coord, make_float4(1.0f, 0.0f, 0.0f, 1.0f));
+        // image->write(coord, make_float4(1.0f, 0.0f, 0.0f, 1.0f));
+        image->write(coord, lambda_callable());
     };
 
     auto fill_image = device.compile(kernel);
