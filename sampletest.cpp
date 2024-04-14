@@ -27,7 +27,6 @@ int main(int, char **argv)
     luisa::compute::Kernel2D pixel_level_process = [&](luisa::compute::ImageFloat image) noexcept
     {
         luisa::compute::Var coord = luisa::compute::dispatch_id().xy();
-        ;
         luisa::compute::Var pixel_color = image->read(coord);
         luisa::compute::Var grayscale = luisa::compute::dot(pixel_color, luisa::compute::make_float4(0.2126f, 0.7152f, 0.0722f, 0.0f));
         image->write(coord, luisa::compute::make_float4(luisa::compute::make_float3(grayscale), 1.0f));

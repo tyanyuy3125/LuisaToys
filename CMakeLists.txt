@@ -14,6 +14,7 @@ add_executable(rttest raytracing.cpp)
 add_executable(wt windowtest.cpp)
 add_executable(st sampletest.cpp)
 add_executable(sc seamcarving.cpp)
+
 #
 # BEGIN LUISA COMPUTE
 #
